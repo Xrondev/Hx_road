@@ -10,7 +10,7 @@ import json
 import threading
 import requests
 
-email = 'EXAMPLE'+'@wku.edu.cn'
+email = 'EXAMPLE'
 userId = ''
 
 requests.packages.urllib3.disable_warnings()

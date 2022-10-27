@@ -1,15 +1,10 @@
-'''
-F88K that edu mailbox.
-
-Send the email with RANDOM userId, you can choose anyone that has
-'''
-
-import json
-import string
 import random
 import requests
+import string
+import json
 
-email = 'XXX@wku.edu.cn'
+
+email = input('please enter the temp email addr https://temp-mail.org/zh/:\n')
 
 requests.packages.urllib3.disable_warnings()
 base_url = "https://www.jumboxtech.com:8022/user/getCode"
@@ -30,7 +25,8 @@ def random_string_generator(str_size, allowed_chars):
 chars = string.ascii_uppercase + string.digits * 3
 size = 32
 
-random_user_id = random_string_generator(size, allowed_chars=chars)
+user_id = str(input('Enter userId or leave it blank for random id:\n'))
+random_user_id = random_string_generator(size, allowed_chars=chars) if user_id == '' else user_id
 
 s = requests.session()
 s.keep_alive = False
@@ -38,3 +34,16 @@ payload = f'userId={random_user_id}&email={email}'
 req = s.post(base_url, headers=header, data=payload, verify=False)
 print(req.content.decode(encoding='utf-8'))
 ob = json.loads(req.content.decode(encoding='utf-8'))
+
+num = int(input('Please enter the code you received:\n'))
+
+s = requests.session()
+s.keep_alive = False
+email = email.replace('@','%40').strip().replace('\n','')
+# print(email)
+payload = f'userId={random_user_id}&code={num:06d}&email={email}'
+print(payload)
+verify_url = "https://www.jumboxtech.com:8022/user/confirmCode"
+req = s.post(verify_url, headers=header, data=payload, verify=False)
+ob = json.loads(req.content.decode(encoding='utf-8'))
+print(req.content.decode(encoding='utf-8'))

