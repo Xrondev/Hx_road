@@ -6,7 +6,7 @@ import json
 import threading
 import requests
 
-articleId = 'XXX'
+articleId = '221029AMD64PPDAW'
 
 requests.packages.urllib3.disable_warnings()
 base_url = "https://www.jumboxtech.com:8022/article/fDeleteArticle"

