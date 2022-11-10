@@ -4,7 +4,6 @@ NOT APPLICABLE
 If userId DNE the operation will fail
 '''
 
-
 import json
 import threading
 import time
@@ -13,8 +12,8 @@ import requests
 import string
 import random
 
-articleId = 'XXX'
-limit = 300
+articleId = '22110626H20GRD40'
+limit = 10
 
 requests.packages.urllib3.disable_warnings()
 base_url = "https://www.jumboxtech.com:8022/social/userLike"
@@ -29,16 +28,30 @@ header = {
     'Referer': 'https://servicewechat.com/wxf7f31446cd68367a/5/page-frame.html',
 }
 
-with open('ids.txt', 'r', encoding='utf-8') as f:
+long_no_login_users = []
+
+with open('userList.txt', 'r', encoding='utf-8') as f:
     for line in f:
-        line = line.replace('\n', '').split(',')[0]
-        limit -= 1
-        s = requests.session()
-        s.keep_alive = False
-        payload = f'userId={line}&targetType=ARTICLE&ActionType=1&targetId={articleId}'
-        print(payload)
-        req = s.post(base_url, headers=header, data=payload, verify=False)
-        ob = json.loads(req.content.decode(encoding='utf-8'))
-        print(req.content.decode(encoding='utf-8'))
-        if limit == 0:
-            break
+        user_id = line.replace('\n', '').split(',')[0].replace("'", "")
+        last_login = int(line.replace('\n', '').split(',')[17].replace("'", "")) / 1000 if \
+            line.replace('\n', '').split(',')[17].replace("'", "") != ' None' else -1
+        if last_login == -1:
+            continue
+        if last_login < 1666708687:
+            long_no_login_users.append(user_id)
+            continue
+
+for i in range(0, limit):
+
+    user_id = random.choice(long_no_login_users)
+    long_no_login_users.remove(user_id)
+    s = requests.session()
+    s.keep_alive = False
+    payload = f'userId={user_id}&targetType=ARTICLE&ActionType=1&targetId={articleId}'
+    print(payload)
+    req = s.post(base_url, headers=header, data=payload, verify=False)
+    ob = json.loads(req.content.decode(encoding='utf-8'))
+    print(req.content.decode(encoding='utf-8'))
+    if limit == 0:
+        break
+    time.sleep(random.randint(1, 5))

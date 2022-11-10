@@ -3,7 +3,6 @@ import requests
 import string
 import json
 
-
 email = input('please enter the temp email addr https://temp-mail.org/zh/:\n')
 
 requests.packages.urllib3.disable_warnings()
@@ -19,8 +18,10 @@ header = {
     'Referer': 'https://servicewechat.com/wxf7f31446cd68367a/5/page-frame.html',
 }
 
+
 def random_string_generator(str_size, allowed_chars):
     return ''.join(random.choice(allowed_chars) for x in range(str_size))
+
 
 chars = string.ascii_uppercase + string.digits * 3
 size = 32
@@ -39,11 +40,11 @@ num = int(input('Please enter the code you received:\n'))
 
 s = requests.session()
 s.keep_alive = False
-email = email.replace('@','%40').strip().replace('\n','')
+email = email.replace('@', '%40').strip().replace('\n', '')
 # print(email)
 payload = f'userId={random_user_id}&code={num:06d}&email={email}'
 print(payload)
 verify_url = "https://www.jumboxtech.com:8022/user/confirmCode"
-req = s.post(verify_url, headers=header, data=payload, verify=False)
+req = s.post(verify_url, headers=header, data=payload.encode('utf-8'), verify=False)
 ob = json.loads(req.content.decode(encoding='utf-8'))
 print(req.content.decode(encoding='utf-8'))

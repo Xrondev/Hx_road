@@ -1,15 +1,12 @@
-'''
-'''
 
 
 import json
 import threading
 import requests
 
-articleId = '22110626H20GRD40'
 
 requests.packages.urllib3.disable_warnings()
-base_url = "https://www.jumboxtech.com:8022/article/fDeleteArticle"
+base_url = "https://www.jumboxtech.com:8022/user/listAllAuthUsers"
 header = {
     'Host': 'www.jumboxtech.com:8022',
     'Connection': 'keep-alive',
@@ -23,7 +20,7 @@ header = {
 
 s = requests.session()
 s.keep_alive = False
-payload = f'articleId={articleId}'
+payload = f'page=1&pageSize=100'
 req = s.post(base_url, headers=header, data=payload, verify=False)
 ob = json.loads(req.content.decode(encoding='utf-8'))
 print(req.content.decode(encoding='utf-8'))

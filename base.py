@@ -10,8 +10,7 @@ import json
 import threading
 import requests
 
-email = 'EXAMPLE'
-userId = 'DB84875CB77E10386BC4C6EA60D5E60E'
+userId = input('User ID: ')
 
 requests.packages.urllib3.disable_warnings()
 base_url = "https://www.jumboxtech.com:8022/user/queryUser"

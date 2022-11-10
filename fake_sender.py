@@ -4,15 +4,16 @@ Use other's name to post the article
 
 
 import json
-import threading
 import requests
 
-userId = '25A4CBAC10263CBCB61708156D0A57DE'
-title = ''
+userId = '3D05EF99EDA43D6CA7535BCE50E66DA6'
+title = '万能墙的木琴'
 content = '''
-
-
+木琴什么时候炸啊？
 '''
+# title = title.encode('utf-8')
+# content = content.encode('utf-8')
+print(title, content)
 
 requests.packages.urllib3.disable_warnings()
 base_url = "https://www.jumboxtech.com:8022/article/uploadArticle"
@@ -29,7 +30,7 @@ header = {
 
 s = requests.session()
 s.keep_alive = False
-payload = f'userId={userId}&articleTag=&articleTitle={title}&articleContent={content}'
-req = s.post(base_url, headers=header, data=payload, verify=False)
+payload = f"userId={userId}&articleTag=&articleTitle={title}&articleContent={content}"
+req = s.post(base_url, headers=header, data=payload.encode('utf-8'), verify=False)
 ob = json.loads(req.content.decode(encoding='utf-8'))
 print(req.content.decode(encoding='utf-8'))

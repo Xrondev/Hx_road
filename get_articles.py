@@ -40,6 +40,7 @@ with open('article.txt', 'a+', encoding='utf-8') as f:
     s.keep_alive = False
     ex = False
     for i in range(1, page_num):
+
         if ex: break
         user_id = random_string_generator(size, chars)
         payload = f'page={i}&userId={user_id}&queryType=0&orderType=0&selectedTag='
